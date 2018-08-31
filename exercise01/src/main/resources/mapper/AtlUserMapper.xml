@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cloudhelios.atlantis.mapper.AtlUserMapper">
+    <select id="query" resultType="com.cloudhelios.atlantis.domain.AtlUser" parameterType="com.cloudhelios.atlantis.dto.AtlUserInDTO" >
+        SELECT
+        u.id,
+        u.user_name,
+        u.password,
+        u.employee_id,
+        u.email,
+        u.phone,
+        u.statue,
+        u.language
+        FROM
+        atl_user u
+        LEFT JOIN atl_department_user du ON u.id = du.user_id
+        LEFT JOIN atl_department d ON du.department_id=d.id
+        <where>
+            <if test="departmentCode != null and departmentCode != ''">
+               AND d.department_code=#{departmentCode}
+            </if>
+            <if test="username != null and username != ''">
+               AND u.user_name like CONCAT('%',#{username},'%')
+            </if>
+            <if test="email != null and email != ''">
+               AND u.email like CONCAT('%',#{email},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+               AND u.phone like CONCAT('%',#{phone},'%')
+            </if>
+        </where>
+    </select>
+</mapper>
