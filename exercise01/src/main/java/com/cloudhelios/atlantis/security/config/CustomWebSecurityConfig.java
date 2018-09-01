@@ -33,21 +33,4 @@ public class CustomWebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(atlUserService)
                 .passwordEncoder(passwordEncoder());
     }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .formLogin()
-//                .loginProcessingUrl("/login").permitAll()
-                .and()
-                .logout().logoutUrl("/logout")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .and()
-                .authorizeRequests()
-//                .antMatchers("/user/login").permitAll()
-                .anyRequest()
-                .authenticated()
-                .and().csrf().disable();
-    }
 }

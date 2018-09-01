@@ -38,6 +38,7 @@ public class OAuth2ServerConfig {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             http.csrf().disable().authorizeRequests()
+                    .antMatchers("/user/register").permitAll()
                     .antMatchers("/user/**").authenticated()
                     .antMatchers("/depart/**").authenticated();
         }

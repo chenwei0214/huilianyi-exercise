@@ -4,7 +4,6 @@ import com.cloudhelios.atlantis.domain.AtlUser;
 import com.cloudhelios.atlantis.exception.CustomException;
 import com.cloudhelios.atlantis.util.Page;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -16,6 +15,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +38,7 @@ public class LuceneService {
 
     public IndexWriter getIndexWriter() {
         try {
-            Analyzer analyzer = new StandardAnalyzer();
+            Analyzer analyzer = new IKAnalyzer();
             IndexWriterConfig cfg = new IndexWriterConfig(analyzer);
             File indexFile = new File(path);
             Directory directory = FSDirectory.open(indexFile.toPath());
@@ -113,8 +113,8 @@ public class LuceneService {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
-                if(indexWriter!=null){
+            } finally {
+                if (indexWriter != null) {
                     try {
                         indexWriter.close();
                     } catch (IOException e) {
@@ -167,13 +167,13 @@ public class LuceneService {
             indexReader = getIndexReader();
             IndexSearcher searcher = new IndexSearcher(indexReader);
             Sort sort = new Sort(new SortField("employeeId", SortField.Type.SCORE, true));
-            TopFieldDocs topDocs = searcher.search(query, 500, sort);
+            TopFieldDocs topDocs = searcher.search(query, 200, sort);
             // 根据获取查询到的总数据
-            int totalHits = topDocs.totalHits;
-            page.setTotalRecord((long) totalHits);
+            long totalHits = topDocs.totalHits;
+            page.setTotalRecord(totalHits);
             int currentPage = page.getPage();
             int pageSize = page.getPageSize();
-            int totalPage = totalHits / pageSize;
+            int totalPage = (int) totalHits / pageSize;
             if (totalHits % pageSize != 0) {
                 totalPage++;
             }
@@ -182,7 +182,7 @@ public class LuceneService {
             ScoreDoc[] scoreDocs = topDocs.scoreDocs;
             if (scoreDocs != null && scoreDocs.length != 0) {
                 int begin = pageSize * (currentPage - 1);
-                int end = Math.min(begin + pageSize, totalHits);
+                int end = Math.min(begin + pageSize, (int) totalHits);
                 List<AtlUser> list = new ArrayList<>();
                 for (int i = begin; i < end; i++) {
                     int docID = scoreDocs[i].doc;

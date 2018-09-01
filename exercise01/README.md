@@ -21,19 +21,18 @@ curl -X DELETE \
   -H 'Cache-Control: no-cache'
 ````
 
-3. 添加用户
+3. 注册用户
 ````
 curl -X PUT \
-  'http://localhost:8080/user/register?departId=1' \
-  -H 'Authorization: Bearer ff4cc574-7e82-4187-a4ec-f2883cce8f88' \
+  'http://localhost:8080/user/register?departId=2' \
   -H 'Cache-Control: no-cache' \
-  -H 'Content-Type: application/json'
+  -H 'Content-Type: application/json' \
   -d '{
-	"username":"zhaoliu",
+	"username":"wangwu",
 	"password":"111111",
-	"employeeId":"1004",
-	"email":"abcde@qq.com",
-	"phone":"15825923413"
+	"employeeId":"1003",
+	"email":"abcd@qq.com",
+	"phone":"15825923412"
 }'
 ````
 

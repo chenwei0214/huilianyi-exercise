@@ -73,7 +73,8 @@
             <artifactId>liquibase-core</artifactId>
         </dependency>
 
-        <!--lucene核心包-->
+        <!-- 添加lucene支持 -->
+        <!--核心包-->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
@@ -85,22 +86,22 @@
             <artifactId>lucene-analyzers-common</artifactId>
         </dependency>
 
-        <!--中文分词器-->
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-analyzers-smartcn</artifactId>
-        </dependency>
-
         <!--对分词索引查询解析-->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queryparser</artifactId>
         </dependency>
 
-        <!--检索关键字高亮显示-->
+        <!--高亮 -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-highlighter</artifactId>
+        </dependency>
+
+        <!--ik-analyzer 中文分词器-->
+        <dependency>
+            <groupId>cn.bestwu</groupId>
+            <artifactId>ik-analyzers</artifactId>
         </dependency>
 
         <dependency>
